@@ -1,0 +1,227 @@
+version: "0.6.11.1"
+
+policy:
+  description: >
+    Fuente autoritativa de tecnologías y capacidades técnicas
+    confirmadas del candidato. Una keyword confirma uso/conocimiento
+    práctico de la tecnología, pero NO autoriza automáticamente
+    liderazgo, administración, arquitectura, años específicos,
+    expertise avanzado ni ownership de producción.
+
+confirmed_keywords:
+
+  languages:
+    - Python
+    - Java
+    - Kotlin
+    - Go
+    - Golang
+    - JavaScript
+    - JS
+    - SQL
+
+  web_fundamentals:
+    - HTML
+    - HTML5
+    - CSS
+    - CSS3
+
+  frontend:
+    - Angular
+    - SPA
+    - responsive interfaces
+    - interfaces responsivas
+    - component-based architecture
+    - arquitectura basada en componentes
+
+  backend:
+    - Spring
+    - Spring Boot
+    - SpringBoot
+    - REST
+    - REST API
+    - REST APIs
+    - APIs REST
+    - FastAPI
+    - backend
+    - microservices
+    - microservicios
+
+  mobile:
+    - Android
+    - Kotlin Android
+    - ML Kit
+    - ML Kit Face Detection
+    - AccessibilityService
+
+  data:
+    - PostgreSQL
+    - SQL
+    - PySpark
+    - OpenSearch
+    - OpenSearch Vector Search
+    - vector search
+    - análisis de datos
+    - data analysis
+
+  ai:
+    - AI
+    - Artificial Intelligence
+    - Machine Learning
+    - ML
+    - LLM
+    - LLMs
+    - Large Language Models
+    - local LLM
+    - local LLMs
+    - LLM local
+    - LLMs locales
+    - Ollama
+    - RAG
+    - embeddings
+    - vector search
+    - Chroma
+    - OpenAI
+    - LangChain
+    - LangGraph
+    - AI agents
+    - agents
+    - agentes
+    - agentic workflows
+    - flujos agénticos
+
+  cloud:
+    - AWS
+    - Amazon Web Services
+    - GCP
+    - Google Cloud
+    - Google Cloud Platform
+    - Oracle Cloud
+    - OCI
+    - Oracle Cloud Infrastructure
+    - Vercel
+    - Render
+
+  devops_observability:
+    - Docker
+    - Kubernetes
+    - Linux
+    - observability
+    - observabilidad
+    - monitoring
+    - monitoreo
+    - logging
+    - Grafana
+    - Datadog
+    - Splunk
+    - Instana
+
+  automation:
+    - Make
+    - Make.com
+    - n8n
+    - workflow automation
+    - automatización de workflows
+    - automation
+    - automatización
+
+  engineering:
+    - Git
+    - GitHub
+    - Gradle
+    - code review
+    - code reviews
+    - documentación técnica
+    - technical documentation
+    - unit testing
+    - integration testing
+    - pruebas unitarias
+    - pruebas de integración
+
+
+confirmed_capabilities:
+
+  - id: angular_responsive_components
+    description: >
+      Desarrollo de interfaces responsivas con Angular
+      usando arquitectura basada en componentes.
+    match_all:
+      -
+        - Angular
+      -
+        - responsiv
+        - arquitectura basada en componentes
+        - component-based
+        - componentes
+
+  - id: spring_rest_api
+    description: >
+      Diseño e implementación de APIs REST/RESTful con Spring Boot.
+    match_all:
+      -
+        - Spring
+        - SpringBoot
+        - Spring Boot
+      -
+        - API
+        - REST
+        - RESTful
+
+  - id: code_review_documentation
+    description: >
+      Revisiones colaborativas de código y documentación técnica.
+    match_all:
+      -
+        - revisión de código
+        - revisiones de código
+        - code review
+        - code reviews
+      -
+        - documentación
+        - documentation
+
+  - id: gradle_build_dependency
+    description: >
+      Uso de Gradle, automatización de builds y control de dependencias.
+    match_all:
+      -
+        - Gradle
+      -
+        - build
+        - dependencia
+        - dependenc
+
+  - id: unit_integration_testing
+    description: >
+      Implementación de pruebas unitarias y de integración.
+    match_all:
+      -
+        - prueba
+        - test
+        - testing
+      -
+        - unitaria
+        - unit
+      -
+        - integración
+        - integration
+
+
+never_upgrade_from_keyword_only:
+
+  - leadership
+  - team leadership
+  - enterprise administration
+  - cloud administration
+  - architecture ownership
+  - production ownership
+  - years of experience
+  - expert level
+  - advanced level
+  - migration ownership
+
+  # JS NO implica RxJS.
+  - RxJS
+
+  # Oracle Cloud NO implica Oracle Database.
+  - Oracle Database

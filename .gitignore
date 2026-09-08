@@ -1,0 +1,76 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Secrets / env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+credentials*
+secrets*
+token*
+cookies*
+
+# Runtime
+state/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+logs/
+*.log
+screenshots/
+artifacts/
+downloads/
+
+# Browser state
+playwright/.auth/
+browser-data/
+user-data-dir/
+Brave-Browser-Agent/
+
+# Personal documents
+*.pdf
+*.doc
+*.docx
+*.odt
+
+# Backups/temp
+backups/
+*.bak
+*.bak-*
+*.tmp
+*.swp
+*~
+.DS_Store
+
+# Audits
+jobs-*-audit-*.txt
+jobs-*-preview-*.txt
+
+# IDE
+.vscode/
+.idea/
+
+# Generated packaging metadata
+src/*.egg-info/
+*.egg-info/
+
+# Additional backup variants
+*.bak1
+*.bak2
+*.bak3
+*.bak.*

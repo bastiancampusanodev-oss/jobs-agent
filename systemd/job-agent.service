@@ -1,0 +1,46 @@
+[Unit]
+Description=Get on Board Autonomous Job Agent v0.6.2
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=900
+StartLimitBurst=5
+
+[Service]
+Type=simple
+WorkingDirectory=%h/Documentos/agentes-v0.1
+
+# Full autonomous two-lane production:
+#   1) DRY RUN prepares/repairs up to PREP_LIMIT
+#   2) SUBMIT sends only DRY_RUN_READY up to SUBMIT_LIMIT
+Environment=MODE=--auto
+Environment=PREP_LIMIT=20
+Environment=SUBMIT_LIMIT=20
+Environment=INTERVAL=900
+Environment=BUSY_PAUSE=10
+Environment=SCROLLS=10
+Environment=MAX_CONSECUTIVE_FAILURES=5
+Environment=HEALTH_RETRY=120
+Environment=ERROR_BACKOFF=300
+Environment=PYTHONUNBUFFERED=1
+Environment=PATH=%h/Documentos/agentes-v0.1/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+
+# Explicit irreversible-action arm. jobs_daemon.sh and jobs_loop.py
+# independently require this exact value.
+Environment=AGENT_SUBMIT_ARMED=YES
+
+ExecStart=%h/Documentos/agentes-v0.1/scripts/jobs_daemon.sh
+
+Restart=on-failure
+RestartSec=60
+# Human intervention / safety stops must NOT auto-restart.
+RestartPreventExitStatus=42 64 70 75
+
+TimeoutStopSec=30
+KillSignal=SIGTERM
+KillMode=control-group
+
+StandardOutput=append:%h/Documentos/agentes-v0.1/logs/job-agent-systemd.log
+StandardError=append:%h/Documentos/agentes-v0.1/logs/job-agent-systemd.log
+
+[Install]
+WantedBy=default.target

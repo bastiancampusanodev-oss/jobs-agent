@@ -1,0 +1,26 @@
+work:
+  remote: true
+  hybrid_santiago: true
+  onsite_santiago: true
+  international_relocation: false
+  contract_types: all
+  fixed_term_contract: true
+  project_based: true
+  hourly: true
+
+availability:
+  immediate_start: "immediate if required / inmediata si es requerido"
+
+location:
+  legal_residency_chile: true
+  has_chilean_rut: true
+  work_authorization_chile: true
+
+salary:
+  usd_to_clp_approx_rate: 950
+  clp_round_to: 50000
+
+safety:
+  never_invent_experience: true
+  stop_if_required_answer_unknown: true
+  never_submit_in_dry_run: true

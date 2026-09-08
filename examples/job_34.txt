@@ -1,0 +1,20 @@
+Ingeniero/a de Procesos TI — BC Tecnología para BancoEstado
+Modalidad presencial, Santiago. Contrato freelance.
+
+Misión: análisis de procesos, sistemas y tecnologías, levantamiento funcional/técnico de requerimientos,
+testing, detección de alertas, aplicación de correctivos y continuidad operacional de servicios TI.
+
+Se requiere experiencia en análisis y mejora de sistemas/procesos, levantamiento funcional/técnico,
+testing, procedimientos de seguridad y control, continuidad operacional.
+
+El proyecto está relacionado con el nuevo Core de Comercio Exterior de BancoEstado e incluye pruebas de
+boletas de garantía, créditos Stand By y obligaciones, además de revisión contable.
+
+Preguntas de postulación:
+- ¿Estás dispuesto a trabajar por proyecto y presencial?
+- ¿Tienes experiencia en levantamiento y análisis funcional/técnico de requerimientos?
+- ¿Tienes experiencia realizando testing y pruebas de sistemas, levantando alertas y aplicando correctivos?
+- ¿Tienes al menos 4 años de experiencia en procesos, sistemas y/o tecnologías?
+- ¿Tienes experiencia realizando pruebas y certificación de operaciones contingentes (boletas de garantía,
+  créditos Stand-by) y efectivas (obligaciones) en Core de Comex?
+- ¿Cuáles son tus pretensiones de renta?

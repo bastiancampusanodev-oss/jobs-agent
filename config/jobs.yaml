@@ -1,0 +1,50 @@
+mode: dry_run
+apply_threshold: 78
+review_threshold: 68
+
+preferences:
+  locations:
+    - Santiago
+    - Remote Chile
+    - Remote LATAM
+    - Remote Worldwide without mandatory relocation
+  modalities:
+    - remote
+    - hybrid
+    - onsite Santiago
+  contracts:
+    - full-time
+    - part-time
+    - freelance
+    - project
+
+hard_rejects:
+  - unpaid
+  - internship
+  - mandatory international relocation
+
+role_preferences:
+  strong:
+    - software engineering
+    - systems analysis
+    - production support
+    - platform operations
+    - DevOps junior or mid
+    - observability
+    - Python
+    - AI / LLM / RAG
+    - integrations / APIs
+    - data engineering when requirements are defendable
+    - technical training / teaching
+  weak_or_avoid_unless_clear_fit:
+    - sales
+    - human resources
+    - accounting-only roles
+    - highly specialized senior frontend
+    - senior cloud specialist requiring deep vendor-specific production history
+
+scoring_policy:
+  central_function_fit_matters_more_than_keyword_overlap: true
+  interview_defensibility_required: true
+  missing_one_or_two_noncentral_requirements_can_be_acceptable: true
+  do_not_invent: true

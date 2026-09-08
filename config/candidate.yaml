@@ -1,0 +1,105 @@
+identity:
+  name: Bastian Campusano Sanhueza
+  location: Santiago, Chile
+  languages:
+    spanish: native
+    english: upper-intermediate conversational and technical reading
+    german: A2
+
+education:
+  - degree: Ingeniería en Ejecución de Software
+    institution: Universidad Técnica Federico Santa María (UTFSM)
+    status: degree in progress / final stage
+  - degree: Analista Programador
+    institution: CFT ProAndes
+    status: completed
+
+experience:
+  - role: Docente / Relator TI
+    organization: Universidad de Santiago de Chile (USACH)
+    period: 2026-present
+    facts:
+      - Applied AI and AI APIs
+      - LangChain and RAG
+      - Python and data engineering
+      - PySpark and distributed systems
+      - Blockchain
+      - Practical technical teaching and evaluation design
+  - role: Analista de Producción / Tecnología
+    organization: BancoEstado
+    period: 2026
+    facts:
+      - Production monitoring
+      - Operational use of Grafana, Splunk and Instana for production monitoring and observability
+      - Log analysis and traceability
+      - Incident response
+      - Operational continuity
+      - Kubernetes environments
+      - Cloud environments
+      - Microservices
+      - Linux
+      - Corporate security practices
+  - role: Desarrollador de Producto IA & HCI
+    organization: AirTap
+    period: 2025-present
+    facts:
+      - Kotlin / Android product development
+      - Applied AI
+      - Analytics and experimentation
+  - role: Administrador de Sistemas
+    organization: ObbySpa
+    period: 2020-2024
+    facts:
+      - Systems and server administration
+      - Users and access
+      - Networks and backups
+      - Documentation
+      - Incident resolution
+  - role: Analista Programador / Desarrollador
+    organization: Willard Solutions & Metacontrol
+    period: 2018-2019
+    facts:
+      - Java
+      - Python
+      - REST APIs
+      - SQL
+      - Git
+      - Technical documentation
+
+skills:
+  hands_on_or_professionally_defensible:
+    - Python
+    - Java
+    - Kotlin / Android
+    - SQL
+    - PostgreSQL
+    - REST APIs
+    - Git / GitHub
+    - Linux
+    - Docker
+    - Kubernetes
+    - monitoring
+    - logging
+    - Grafana
+    - Splunk
+    - Instana
+    - incident response
+    - microservices
+    - PySpark
+    - LangChain
+    - RAG
+    - LLM API integration
+  do_not_upgrade_to_expert_without_evidence:
+    - GCP-specific managed services
+    - advanced CI/CD platform administration
+    - specialized banking products outside known work
+    - Core de Comercio Exterior
+    - boletas de garantía certification
+    - Stand By credit certification
+
+truth_guardrails:
+  never_claim:
+    - direct Core de Comercio Exterior experience
+    - certification/testing of boletas de garantía unless new evidence is supplied
+    - certification/testing of Stand By credits unless new evidence is supplied
+    - a technology as hands-on merely because it appears in a job description

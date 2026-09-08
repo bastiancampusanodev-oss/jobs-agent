@@ -1,0 +1,82 @@
+version: "0.6.11.2"
+
+policy:
+  never_invent:
+    - nombres de proyectos no confirmados
+    - nombres de módulos de negocio no confirmados
+    - años específicos con una tecnología si no están documentados
+    - liderazgo técnico no documentado
+    - ownership de arquitectura no documentado
+    - experiencia con AngularJS 1.x a partir de experiencia con Angular
+
+career:
+
+  financial_sector:
+    confirmed: true
+    organization: BancoEstado
+    sector: banca
+
+    context:
+      - producción tecnológica
+      - monitoreo
+      - observabilidad
+      - análisis de logs
+      - trazabilidad
+      - resolución de incidentes
+      - continuidad operacional
+      - documentación técnica
+
+    not_confirmed:
+      - COMEX funcional
+      - corredoras de bolsa
+      - compañías de seguros
+      - productos bancarios especializados no documentados
+
+  java_spring_angular:
+    confirmed: true
+
+    backend:
+      - Java
+      - Spring
+      - Spring Boot
+      - APIs REST
+      - integración backend
+
+    frontend:
+      - Angular
+      - arquitectura basada en componentes
+      - interfaces responsivas
+      - integración frontend-backend
+
+    engineering:
+      - Git
+      - SQL
+      - Gradle
+      - code review
+      - documentación técnica
+      - pruebas unitarias
+      - pruebas de integración
+
+    not_confirmed:
+      - AngularJS 1.x
+      - gestión compleja de estado con RxJS
+      - nombres específicos de módulos de negocio
+      - liderazgo técnico
+      - arquitectura completa del sistema
+
+    safe_narrative_es: >
+      En proyectos de desarrollo fullstack he trabajado con Java y
+      Spring Boot en backend y Angular en frontend. Mi trabajo ha
+      incluido diseño e implementación de APIs REST, integración
+      entre backend y frontend, desarrollo de componentes e
+      interfaces responsivas, trabajo con SQL y Git, automatización
+      de builds y dependencias con Gradle, revisiones de código,
+      documentación técnica y pruebas unitarias y de integración.
+
+    safe_narrative_en: >
+      In full-stack software development projects I have worked with
+      Java and Spring Boot on the backend and Angular on the frontend.
+      My work has included REST API design and implementation,
+      backend/frontend integration, responsive component development,
+      SQL and Git, Gradle build and dependency automation, code
+      reviews, technical documentation, and unit and integration tests.

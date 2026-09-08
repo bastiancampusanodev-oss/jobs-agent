@@ -1,0 +1,61 @@
+cvs:
+
+  - id: "01_ES"
+    profile: "AI / GenAI / ML"
+    language: "es"
+    filename: "Bastian_Campusano_CV_01_AI_GenAI_ML_ES.pdf"
+    path: "cvs/Bastian_Campusano_CV_01_AI_GenAI_ML_ES.pdf"
+
+  - id: "02_EN"
+    profile: "AI / GenAI / ML"
+    language: "en"
+    filename: "Bastian_Campusano_CV_02_AI_GenAI_ML_EN.pdf"
+    path: "cvs/Bastian_Campusano_CV_02_AI_GenAI_ML_EN.pdf"
+
+  - id: "03_ES"
+    profile: "Python / Backend / Automation"
+    language: "es"
+    filename: "Bastian_Campusano_CV_03_Python_Backend_Automation_ES.pdf"
+    path: "cvs/Bastian_Campusano_CV_03_Python_Backend_Automation_ES.pdf"
+
+  - id: "04_EN"
+    profile: "Python / Backend / Automation"
+    language: "en"
+    filename: "Bastian_Campusano_CV_04_Python_Backend_Automation_EN.pdf"
+    path: "cvs/Bastian_Campusano_CV_04_Python_Backend_Automation_EN.pdf"
+
+  - id: "05_ES"
+    profile: "DevOps / Cloud / Observability"
+    language: "es"
+    filename: "Bastian_Campusano_CV_05_DevOps_Cloud_Observability_ES.pdf"
+    path: "cvs/Bastian_Campusano_CV_05_DevOps_Cloud_Observability_ES.pdf"
+
+  - id: "06_EN"
+    profile: "DevOps / Cloud / Observability"
+    language: "en"
+    filename: "Bastian_Campusano_CV_06_DevOps_Cloud_Observability_EN.pdf"
+    path: "cvs/Bastian_Campusano_CV_06_DevOps_Cloud_Observability_EN.pdf"
+
+  - id: "07_ES"
+    profile: "Data Engineer / PySpark / SQL"
+    language: "es"
+    filename: "Bastian_Campusano_CV_07_Data_Engineer_PySpark_SQL_ES.pdf"
+    path: "cvs/Bastian_Campusano_CV_07_Data_Engineer_PySpark_SQL_ES.pdf"
+
+  - id: "08_EN"
+    profile: "Data Engineer / PySpark / SQL"
+    language: "en"
+    filename: "Bastian_Campusano_CV_08_Data_Engineer_PySpark_SQL_EN.pdf"
+    path: "cvs/Bastian_Campusano_CV_08_Data_Engineer_PySpark_SQL_EN.pdf"
+
+  - id: "09_ES"
+    profile: "Software / Systems / Solutions"
+    language: "es"
+    filename: "Bastian_Campusano_CV_09_Software_Systems_Solutions_ES.pdf"
+    path: "cvs/Bastian_Campusano_CV_09_Software_Systems_Solutions_ES.pdf"
+
+  - id: "10_EN"
+    profile: "Software / Systems / Solutions"
+    language: "en"
+    filename: "Bastian_Campusano_CV_10_Software_Systems_Solutions_EN.pdf"
+    path: "cvs/Bastian_Campusano_CV_10_Software_Systems_Solutions_EN.pdf"
