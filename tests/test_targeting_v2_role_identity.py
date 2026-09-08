@@ -297,3 +297,78 @@ def test_recommendation_noise_is_cut():
 
     assert "Trabajos similares" not in cleaned
     assert "QA Automation" not in cleaned
+
+
+def test_final_non_technical_backlog_roles_are_rejected():
+
+    rejected = (
+        "analista de control interno y cumplimiento sox bc tecnologia santiago",
+        "analista control de gestion bnp paribas cardif santiago",
+        "asistente de back office patrimore remote",
+        "analista de prevencion de lavado de dinero aml bc tecnologia santiago",
+        "customer succes associate wherex santiago",
+        "bookkeeping operations va cactus blossom financial remote",
+        "actuario senior bnp paribas cardif santiago",
+        "onboarding analyst fitco remote",
+        "operations onboarding lead bmb 247 remote",
+        "analista de operaciones bancarias bc tecnologia santiago",
+        "operations analyst niuro remote",
+        "revenue operations manager rankmi santiago",
+        "analista licitaciones usercode spa remote",
+        "lider excelencia operacional agrosuper remote",
+        "asesor financiero patrimore remote",
+        "customer support specialist healthatom remote",
+    )
+
+    for role in rejected:
+
+        mismatch = analyzer._central_mismatch(
+            role
+        )
+
+        assert mismatch is not None, (
+            role,
+            mismatch,
+        )
+
+
+def test_it_operations_analyst_is_preserved():
+
+    assert analyzer._central_mismatch(
+        "it operations analyst cloud linux remote"
+    ) is None
+
+
+def test_technical_customer_support_is_preserved():
+
+    assert analyzer._central_mismatch(
+        "technical customer support engineer remote"
+    ) is None
+
+
+def test_application_support_is_preserved():
+
+    assert analyzer._central_mismatch(
+        "application support engineer santiago"
+    ) is None
+
+
+def test_technical_onboarding_is_preserved():
+
+    assert analyzer._central_mismatch(
+        "technical onboarding specialist api remote"
+    ) is None
+
+
+def test_generic_customer_support_is_rejected():
+
+    assert analyzer._central_mismatch(
+        "customer support specialist remote"
+    ) is not None
+
+
+def test_generic_operations_analyst_is_rejected():
+
+    assert analyzer._central_mismatch(
+        "operations analyst remote"
+    ) is not None
