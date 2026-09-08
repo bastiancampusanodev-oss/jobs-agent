@@ -4,6 +4,7 @@ import json
 import os
 import re
 from typing import Literal
+from urllib.parse import urlsplit
 
 from pydantic import BaseModel, Field
 
@@ -108,6 +109,12 @@ FAMILIES = {
             "pipeline de datos": 4,
             "airflow": 3,
             "databricks": 3,
+            "data governance": 5,
+            "gobierno de datos": 5,
+            "metadata": 4,
+            "metadatos": 4,
+            "data quality": 4,
+            "calidad de datos": 4,
         },
     },
 
@@ -154,6 +161,17 @@ FAMILIES = {
             "terraform": 3,
             "prometheus": 3,
             "datadog": 3,
+            "cybersecurity": 5,
+            "ciberseguridad": 5,
+            "security analyst": 5,
+            "information security": 5,
+            "seguridad de la información": 5,
+            "seguridad de la informacion": 5,
+            "network engineer": 4,
+            "network administrator": 4,
+            "redes": 2,
+            "business analyst": 4,
+            "analista de negocio": 4,
         },
     },
 
@@ -221,17 +239,51 @@ COMMON_TECH = (
 
 
 AVOID_CENTRAL = (
+    # Commercial / sales
     "sales representative",
     "sales executive",
     "account executive",
     "business development representative",
+    "gerente de cuentas",
+    "key account manager",
+
+    # HR / recruiting
     "recruiter",
     "talent acquisition",
     "human resources",
     "recursos humanos",
+    "rrhh",
+
+    # Finance / accounting
     "contador",
+    "contable",
     "contabilidad",
     "accountant",
+    "accounting manager",
+    "director of finance",
+    "finance director",
+    "billing specialist",
+    "tesorería",
+    "tesoreria",
+    "cobranza",
+    "insurance agent",
+
+    # Administrative / generic service roles
+    "asistente administrativo",
+    "administrative assistant",
+    "executive assistant",
+    "call center",
+    "customer service representative",
+    "customer success manager",
+    "customer success associate",
+    "customer success senior",
+    "customer care",
+    "customer engagement",
+    "guest experience",
+    "resident service coordinator",
+    "dispatcher",
+    "coordinador de eventos",
+    "coordinador/a de eventos",
 )
 
 
@@ -296,6 +348,186 @@ def _compact(text: str, max_chars: int) -> str:
         + "\n[...]\n"
         + text[-tail:]
     )
+
+
+def _role_identity(
+    job_text: str,
+    source_url: str | None,
+) -> str:
+    """
+    Stable role identity.
+
+    Prefer the final URL slug because Get on Board's body may
+    contain recommendations, navigation and unrelated jobs.
+    """
+
+    slug = ""
+
+    try:
+        slug = (
+            urlsplit(str(source_url or ""))
+            .path
+            .rstrip("/")
+            .split("/")[-1]
+        )
+    except Exception:
+        slug = ""
+
+    if slug:
+        return re.sub(
+            r"[-_]+",
+            " ",
+            slug.casefold(),
+        ).strip()
+
+    # Fallback only when there is no URL.
+    for line in (job_text or "").splitlines():
+        value = line.strip()
+
+        if value:
+            return value.casefold()[:300]
+
+    return ""
+
+
+def _vacancy_text(job_text: str) -> str:
+    """
+    Keep the actual vacancy area and discard common recommendation/
+    footer sections that otherwise contaminate skill detection.
+    """
+
+    text = (job_text or "").strip()
+
+    if not text:
+        return ""
+
+    lowered = text.casefold()
+
+    markers = (
+        "\ntrabajos similares",
+        "\ntrabajos recomendados",
+        "\nofertas similares",
+        "\notras ofertas",
+        "\nsimilar jobs",
+        "\nrecommended jobs",
+        "\nother jobs",
+        "\nmore jobs",
+        "\nexplora otros",
+        "\nexplore other",
+    )
+
+    cuts = []
+
+    for marker in markers:
+        pos = lowered.find(marker)
+
+        # Never cut inside the vacancy header.
+        if pos >= 700:
+            cuts.append(pos)
+
+    if cuts:
+        text = text[:min(cuts)]
+
+    # Hard upper bound against huge navigation/sidebar blobs.
+    return text[:9000]
+
+
+def _targeting_blob(
+    job_text: str,
+    source_url: str | None,
+) -> str:
+    return (
+        _role_identity(
+            job_text,
+            source_url,
+        )
+        + "\n"
+        + _vacancy_text(job_text)
+    ).casefold()
+
+
+def _internship_role(
+    role_identity: str,
+) -> str | None:
+
+    patterns = (
+        r"\bpráctica\b",
+        r"\bpractica\b",
+        r"\bpracticante\b",
+        r"\binternship\b",
+        r"\bintern\b",
+        r"\btrainee\b",
+    )
+
+    for pattern in patterns:
+        if re.search(
+            pattern,
+            role_identity,
+        ):
+            return pattern
+
+    return None
+
+
+def _strict_location_ok(
+    job_text: str,
+    source_url: str | None,
+) -> bool:
+    """
+    Auto-apply target:
+      - Remote / remoto / regional remote
+      - Santiago
+
+    'Chile' by itself is intentionally NOT sufficient because
+    the user only targets presencial/híbrido in Santiago.
+    """
+
+    identity = _role_identity(
+        job_text,
+        source_url,
+    )
+
+    head = _vacancy_text(
+        job_text
+    )[:1400].casefold()
+
+    location_blob = (
+        identity
+        + "\n"
+        + head
+    )
+
+    if re.search(
+        r"\b(remote|remoto)\b",
+        location_blob,
+    ):
+        return True
+
+    if "santiago" in location_blob:
+        return True
+
+    # Regional remote wording.
+    if (
+        any(
+            term in location_blob
+            for term in (
+                "latam",
+                "latin america",
+                "south america",
+            )
+        )
+        and any(
+            term in location_blob
+            for term in (
+                "remote",
+                "remoto",
+                "based anywhere",
+            )
+        )
+    ):
+        return True
+
+    return False
 
 
 def _language(blob: str) -> str:
@@ -400,76 +632,64 @@ def _hard_blocker(blob: str) -> str | None:
 
 
 def _central_mismatch(
-    blob: str,
-    tech_hits: int,
+    role_identity: str,
 ) -> str | None:
+    """
+    Central-function mismatches come from the role identity only.
 
-    # Focus mainly on title / beginning of vacancy.
-    head = blob[:1000]
+    Incidental mentions of Python, APIs or software in a finance,
+    HR, sales or customer-service vacancy cannot override the
+    actual profession being hired.
+    """
 
     for term in AVOID_CENTRAL:
-        if term in head and tech_hits < 3:
+        if term in role_identity:
             return term
 
     return None
 
 
 def _central_qa_role(
-    blob: str,
+    job_text: str,
     source_url: str | None,
 ) -> str | None:
     """
-    Exclude formal QA/testing jobs while preserving the mixed
-    Get on Board sysadmin-devops-qa discovery category.
+    Exclude formal QA roles based on the actual role identity.
 
-    Generic words such as ``test`` or the category slug ``qa``
-    are deliberately NOT enough to reject a vacancy because
-    developers, DevOps and SRE roles frequently mention tests
-    or live inside that mixed category.
+    Never inspect the page body for QA markers: Get on Board can
+    include recommended QA vacancies in the same rendered page.
     """
 
-    url_text = re.sub(
-        r"[-_/]+",
-        " ",
-        str(source_url or "").casefold(),
+    identity = _role_identity(
+        job_text,
+        source_url,
     )
 
-    # The title and role identity normally appear near the top.
-    head = (
-        url_text
-        + "\n"
-        + blob[:1400]
-    )
+    if re.search(
+        r"(^|\s)qa(\s|$)",
+        identity,
+    ):
+        return "qa"
 
     strong_markers = (
-        "qa engineer",
-        "qa analyst",
-        "analista qa",
-        "ingeniero qa",
-        "qa automation",
-        "automation qa",
-        "qa funcional",
-        "qa manual",
-        "quality assurance engineer",
-        "quality assurance analyst",
+        "quality assurance",
         "software tester",
         "manual tester",
         "automation tester",
         "test automation engineer",
         "test engineer",
-        "sdet",
         "software development engineer in test",
     )
 
     for marker in strong_markers:
-        if marker in head:
+        if marker in identity:
             return marker
 
     if re.search(
-        r"\btester\b",
-        head,
+        r"(^|\s)sdet(\s|$)",
+        identity,
     ):
-        return "tester"
+        return "sdet"
 
     return None
 
@@ -517,6 +737,7 @@ def _deterministic_score(
     blob: str,
     family_score: int,
     tech_hits: int,
+    location_ok: bool,
 ) -> int:
 
     score = 52
@@ -531,10 +752,7 @@ def _deterministic_score(
         10,
     )
 
-    if any(
-        x in blob
-        for x in ACCEPTED_LOCATION
-    ):
+    if location_ok:
         score += 4
 
     years = _max_required_years(blob)
@@ -728,7 +946,43 @@ async def analyze_job(
     source_url: str | None = None,
 ) -> JobDecision:
 
-    blob = (job_text or "").casefold()
+    role_identity = _role_identity(
+        job_text,
+        source_url,
+    )
+
+    vacancy_text = _vacancy_text(
+        job_text
+    )
+
+    blob = _targeting_blob(
+        job_text,
+        source_url,
+    )
+
+    internship = _internship_role(
+        role_identity
+    )
+
+    if internship:
+        print(
+            "⚡ DETERMINISTIC SKIP:"
+            " internship_or_practice_role"
+        )
+
+        return _build_result(
+            decision="SKIP",
+            score=0,
+            cv_id=None,
+            source_url=source_url,
+            why=(
+                "Internship/practice role excluded "
+                "by candidate targeting policy."
+            ),
+            hard_gaps=[
+                "internship/practice role excluded",
+            ],
+        )
 
     blocker = _hard_blocker(blob)
 
@@ -751,7 +1005,7 @@ async def analyze_job(
         )
 
     qa_role = _central_qa_role(
-        blob,
+        job_text,
         source_url,
     )
 
@@ -785,8 +1039,7 @@ async def analyze_job(
     tech_hits = _tech_hits(blob)
 
     mismatch = _central_mismatch(
-        blob,
-        tech_hits,
+        role_identity,
     )
 
     if mismatch:
@@ -812,7 +1065,7 @@ async def analyze_job(
     # local LLM is unavailable.
     if (
         family_score == 0
-        and tech_hits == 0
+        and tech_hits < 3
     ):
         print(
             "⚡ DETERMINISTIC SKIP:"
@@ -839,10 +1092,16 @@ async def analyze_job(
         language,
     )
 
+    location_ok = _strict_location_ok(
+        job_text,
+        source_url,
+    )
+
     score = _deterministic_score(
         blob=blob,
         family_score=family_score,
         tech_hits=tech_hits,
+        location_ok=location_ok,
     )
 
     print(
@@ -892,7 +1151,7 @@ async def analyze_job(
     )
 
     gray = await _gray_llm(
-        vacancy=job_text,
+        vacancy=vacancy_text,
         model=model,
         timeout=timeout,
     )
