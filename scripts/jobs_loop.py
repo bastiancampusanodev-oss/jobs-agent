@@ -15,7 +15,15 @@ from playwright.async_api import Error as PlaywrightError
 
 from agentes.browser import BrowserSession
 from agentes.config import Settings
-from agentes.jobs.analyzer import analyze_job
+from agentes.jobs.analyzer import (
+    analyze_job,
+    _central_mismatch,
+    _central_qa_role,
+    _internship_role,
+    _role_identity,
+    _strict_location_ok,
+    _targeting_blob,
+)
 from agentes.jobs.gob_stage import repair_step_from_stage, resolve_gob_step
 from agentes.jobs.cv_language_policy import resolve_cv_language
 from agentes.jobs.submit_confirmation_policy import (
@@ -144,72 +152,42 @@ def promote_review_if_safe(decision, job_text: str, url: str):
     if not cv_id:
         return decision
 
-    blob = (
-        url
-        + "\n"
-        + job_text
-    ).lower()
-
-    # --------------------------------------------------------
-    # FORMAL QA POLICY
-    # --------------------------------------------------------
-    #
-    # Keep discovering the mixed Get on Board
-    # sysadmin-devops-qa category, but never promote an actual
-    # QA/testing role to APPLY.
-    role_head = re.sub(
-        r"[-_/]+",
-        " ",
-        (
-            url
-            + "\n"
-            + job_text[:1400]
-        ).lower(),
+    role_identity = _role_identity(
+        job_text,
+        url,
     )
 
-    qa_role_markers = (
-        "qa engineer",
-        "qa analyst",
-        "analista qa",
-        "ingeniero qa",
-        "qa automation",
-        "automation qa",
-        "qa funcional",
-        "qa manual",
-        "quality assurance engineer",
-        "quality assurance analyst",
-        "software tester",
-        "manual tester",
-        "automation tester",
-        "test automation engineer",
-        "test engineer",
-        "sdet",
-        "software development engineer in test",
+    blob = _targeting_blob(
+        job_text,
+        url,
     )
 
-    if (
-        any(
-            marker in role_head
-            for marker in qa_role_markers
-        )
-        or re.search(
-            r"\btester\b",
-            role_head,
-        )
+    # --------------------------------------------------------
+    # ROLE IDENTITY GATES
+    # --------------------------------------------------------
+
+    if _central_qa_role(
+        job_text,
+        url,
     ):
         return decision
 
-    # --------------------------------------------------------
-    # HARD BLOCKERS
-    # --------------------------------------------------------
+    if _internship_role(
+        role_identity
+    ):
+        return decision
+
+    if _central_mismatch(
+        role_identity
+    ):
+        return decision
+
+    # Analyzer already catches content blockers for fresh jobs.
+    # This bounded head check protects historical cached REVIEW
+    # decisions without scanning unrelated recommendations.
+    blocker_head = blob[:2500]
 
     hard_blockers = (
-        "practicante",
-        "práctica profesional",
-        "practica profesional",
-        "internship",
-        "intern ",
-        "trainee",
         "unpaid",
         "sin remuneración",
         "sin remuneracion",
@@ -221,27 +199,15 @@ def promote_review_if_safe(decision, job_text: str, url: str):
     )
 
     if any(
-        blocker in blob
+        blocker in blocker_head
         for blocker in hard_blockers
     ):
         return decision
 
-    # Para auto-submit sólo ubicaciones que ya aceptamos:
-    # Santiago / Chile / remoto.
-    location_ok = any(
-        x in blob
-        for x in (
-            "remote",
-            "remoto",
-            "santiago",
-            "chile",
-            "south america",
-            "latin america",
-            "latam",
-        )
-    )
-
-    if not location_ok:
+    if not _strict_location_ok(
+        job_text,
+        url,
+    ):
         return decision
 
     # --------------------------------------------------------
