@@ -284,6 +284,34 @@ AVOID_CENTRAL = (
     "dispatcher",
     "coordinador de eventos",
     "coordinador/a de eventos",
+
+    # Finance / compliance / business operations
+    "control interno",
+    "cumplimiento sox",
+    "control de gestión",
+    "control de gestion",
+    "back office",
+    "mesa de dinero",
+    "lavado de dinero",
+    "prevención de lavado",
+    "prevencion de lavado",
+    "bookkeeping",
+    "actuario",
+    "actuary",
+    "operaciones bancarias",
+    "revenue operations manager",
+    "licitaciones",
+    "excelencia operacional",
+    "asesor financiero",
+    "financial advisor",
+
+    # Generic non-technical operations / customer roles.
+    # Some have explicit technical exceptions below.
+    "operations analyst",
+    "operations assistant",
+    "onboarding",
+    "customer support",
+    "customer succes associate",
 )
 
 
@@ -637,14 +665,75 @@ def _central_mismatch(
     """
     Central-function mismatches come from the role identity only.
 
-    Incidental mentions of Python, APIs or software in a finance,
-    HR, sales or customer-service vacancy cannot override the
-    actual profession being hired.
+    Generic operations/support/onboarding titles may still be
+    legitimate when the title itself explicitly identifies an
+    IT/technical function. Finance, compliance, accounting, sales,
+    HR and generic customer-success roles remain hard mismatches.
     """
 
+    technical_identity_markers = (
+        "technical",
+        "técnico",
+        "tecnico",
+        "technology",
+        "tecnología",
+        "tecnologia",
+        " it ",
+        " ti ",
+        "devops",
+        "sre",
+        "cloud",
+        "infraestructura",
+        "infrastructure",
+        "application support",
+        "soporte ti",
+        "soporte técnico",
+        "soporte tecnico",
+        "helpdesk",
+        "help desk",
+        "service desk",
+        "systems",
+        "sistemas",
+        "software",
+        "developer",
+        "desarrollador",
+        "engineer",
+        "ingeniero",
+        "data ",
+        "datos",
+        "database",
+        "dba",
+        "cybersecurity",
+        "ciberseguridad",
+        "security",
+        "seguridad",
+        "network",
+        "redes",
+    )
+
+    technical_identity = any(
+        marker in f" {role_identity} "
+        for marker in technical_identity_markers
+    )
+
+    technical_exemptable = (
+        "operations analyst",
+        "onboarding",
+        "customer support",
+    )
+
     for term in AVOID_CENTRAL:
-        if term in role_identity:
-            return term
+
+        if term not in role_identity:
+            continue
+
+        if (
+            term in technical_exemptable
+            and technical_identity
+        ):
+            continue
+
+        return term
 
     return None
 
